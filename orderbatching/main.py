@@ -1,11 +1,13 @@
 import json
-
+import sys
 from datastructures import Article, Order
 
 
-if __name__ == "__main__":
+def main(argv):
+    instance_path = argv[1] if argv[1] is not None else "orderbatching/data/instance.json"
+    solution_path = argv[2] if argv[2] is not None else "orderbatching/data/solution.json"
 
-    with open("data/instance.json") as file:
+    with open(instance_path) as file:
         data = json.load(file)
 
     articles_id_mapping, orders = {}, []
@@ -25,3 +27,7 @@ if __name__ == "__main__":
         orders.append(Order(
             order_id=order['OrderId'], articles=articles
         ))
+
+
+if __name__ == "__main__":
+    main(argv=sys.argv)
