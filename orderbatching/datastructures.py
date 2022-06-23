@@ -1,7 +1,7 @@
 
 class Article:
 
-    def __init__(self, article_id, volume):
+    def __init__(self, article_id: int, volume: int):
         self.article_id = article_id
         self.volume = volume
         self.warehouse_id = None
@@ -10,7 +10,7 @@ class Article:
 
 class Order:
 
-    def __init__(self, order_id, articles):
+    def __init__(self, order_id: int, articles: list):
         self.order_id = order_id
         self.articles = articles
         self._weight_per_warehouse = {}
@@ -20,5 +20,5 @@ class Order:
             except KeyError:
                 self._weight_per_warehouse[article.warehouse_id] = article.volume
 
-    def get_warehouse_weight(self, warehouse_id):
+    def get_warehouse_weight(self, warehouse_id: int) -> int:
         return self._weight_per_warehouse.get(warehouse_id, 0)
