@@ -1,0 +1,182 @@
+{
+  "Waves": [
+    {
+      "WaveId": 0,
+      "BatchIds": [0, 1, 2, 3, 4, 5, 6],
+      "OrderIds": [0, 1, 2],
+      "WaveSize": 19
+    },
+    {
+      "WaveId": 1,
+      "BatchIds": [7, 8, 9, 10, 11, 12, 13, 14],
+      "OrderIds": [3, 4, 5, 6, 7],
+      "WaveSize": 25
+    },
+    { "WaveId": 2,
+    "BatchIds": [15, 16, 17],
+    "OrderIds": [8, 9],
+    "WaveSize": 8 }
+  ],
+  "Batches": [
+    {
+      "BatchId": 0,
+      "Items": [
+        { "OrderId": 0, "ArticleId": 158 },
+        { "OrderId": 0, "ArticleId": 88 },
+        { "OrderId": 0, "ArticleId": 78 }
+      ],
+      "BatchVolume": 730
+    },
+    {
+      "BatchId": 1,
+      "Items": [
+        { "OrderId": 0, "ArticleId": 0 },
+        { "OrderId": 0, "ArticleId": 120 },
+        { "OrderId": 0, "ArticleId": 154 }
+      ],
+      "BatchVolume": 820
+    },
+    {
+      "BatchId": 2,
+      "Items": [
+        { "OrderId": 1, "ArticleId": 77 },
+        { "OrderId": 1, "ArticleId": 72 },
+        { "OrderId": 1, "ArticleId": 153 }
+      ],
+      "BatchVolume": 1000
+    },
+    {
+      "BatchId": 3,
+      "Items": [
+        { "OrderId": 1, "ArticleId": 1 },
+        { "OrderId": 1, "ArticleId": 34 },
+        { "OrderId": 1, "ArticleId": 137 }
+      ],
+      "BatchVolume": 890
+    },
+    {
+      "BatchId": 4,
+      "Items": [
+        { "OrderId": 1, "ArticleId": 78 },
+        { "OrderId": 1, "ArticleId": 27 },
+        { "OrderId": 2, "ArticleId": 120 }
+      ],
+      "BatchVolume": 980
+    },
+    {
+      "BatchId": 5,
+      "Items": [
+        { "OrderId": 2, "ArticleId": 24 },
+        { "OrderId": 2, "ArticleId": 34 },
+        { "OrderId": 2, "ArticleId": 130 }
+      ],
+      "BatchVolume": 740
+    },
+    {
+      "BatchId": 6,
+      "Items": [
+        { "OrderId": 2, "ArticleId": 77 }
+        ],
+      "BatchVolume": 360
+    },
+    {
+      "BatchId": 7,
+      "Items": [
+        { "OrderId": 3, "ArticleId": 144 },
+        { "OrderId": 3, "ArticleId": 29 },
+        { "OrderId": 3, "ArticleId": 121 },
+        { "OrderId": 3, "ArticleId": 6 }
+      ],
+      "BatchVolume": 850
+    },
+    {
+      "BatchId": 8,
+      "Items": [
+        { "OrderId": 3, "ArticleId": 152 },
+        { "OrderId": 3, "ArticleId": 26 },
+        { "OrderId": 3, "ArticleId": 159 }
+      ],
+      "BatchVolume": 880
+    },
+    {
+      "BatchId": 9,
+      "Items": [
+        { "OrderId": 3, "ArticleId": 20 },
+        { "OrderId": 3, "ArticleId": 12 },
+        { "OrderId": 4, "ArticleId": 65 },
+        { "OrderId": 4, "ArticleId": 113 }
+      ],
+      "BatchVolume": 900
+    },
+    {
+      "BatchId": 10,
+      "Items": [
+        { "OrderId": 4, "ArticleId": 38 },
+        { "OrderId": 4, "ArticleId": 50 },
+        { "OrderId": 4, "ArticleId": 43 }
+      ],
+      "BatchVolume": 900
+    },
+    {
+      "BatchId": 11,
+      "Items": [
+        { "OrderId": 4, "ArticleId": 95 },
+        { "OrderId": 5, "ArticleId": 112 },
+        { "OrderId": 5, "ArticleId": 56 }
+      ],
+      "BatchVolume": 840
+    },
+    {
+      "BatchId": 12,
+      "Items": [
+        { "OrderId": 5, "ArticleId": 93 },
+        { "OrderId": 5, "ArticleId": 39 },
+        { "OrderId": 5, "ArticleId": 159 }
+      ],
+      "BatchVolume": 830
+    },
+    {
+      "BatchId": 13,
+      "Items": [
+        { "OrderId": 5, "ArticleId": 138 },
+        { "OrderId": 6, "ArticleId": 38 }
+      ],
+      "BatchVolume": 800
+    },
+    {
+      "BatchId": 14,
+      "Items": [
+        { "OrderId": 7, "ArticleId": 78 },
+        { "OrderId": 7, "ArticleId": 19 },
+        { "OrderId": 7, "ArticleId": 120 }
+      ],
+      "BatchVolume": 860
+    },
+    {
+      "BatchId": 15,
+      "Items": [
+        { "OrderId": 8, "ArticleId": 142 },
+        { "OrderId": 8, "ArticleId": 99 }
+      ],
+      "BatchVolume": 870
+    },
+    {
+      "BatchId": 16,
+      "Items": [
+        { "OrderId": 8, "ArticleId": 15 },
+        { "OrderId": 8, "ArticleId": 2 },
+        { "OrderId": 8, "ArticleId": 103 }
+      ],
+      "BatchVolume": 750
+    },
+    {
+      "BatchId": 17,
+      "Items": [
+        { "OrderId": 9, "ArticleId": 38 },
+        { "OrderId": 9, "ArticleId": 114 },
+        { "OrderId": 9, "ArticleId": 2 }
+      ],
+      "BatchVolume": 850
+    }
+  ]
+}
