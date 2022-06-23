@@ -56,3 +56,20 @@ def check_max_batch_weight(waves: list) -> bool:
 def check_unique_order_ids(waves: dict) -> bool:
     order_ids = [order_id for wave in waves for order_id in wave["OrderIds"]]
     return len(order_ids) == len(set(order_ids))
+
+
+def calc_tour_cost(solution: dict, articles: dict) -> int:
+    article_batches = [[articles[item["ArticleId"]] for item in batch["Items"]] for batch in solution["Batches"]]
+    return sum(
+        [len(set(article.warehouse_id for article in batch)) * 10 +
+         len(set(article.aisle_id for article in batch)) * 5
+         for batch in article_batches]
+               )
+
+
+def calc_rest_cost(solution: dict) -> int:
+    return len(solution["Waves"]) * 10 + len(solution["Batches"]) * 5
+
+
+def calc_total_cost(solution: dict, articles: dict) -> int:
+    return calc_tour_cost(solution, articles) + calc_rest_cost(solution)
