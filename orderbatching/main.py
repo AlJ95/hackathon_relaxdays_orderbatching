@@ -7,3 +7,5 @@ if __name__ == "__main__":
     article_locations = data["ArticleLocations"]
     orders = data["Orders"]
     articles = data["Articles"]
+
+
