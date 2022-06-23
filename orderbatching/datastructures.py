@@ -1,14 +1,11 @@
 
 class Article:
 
-    article_id_mapping = {}
-
     def __init__(self, article_id, volume):
         self.article_id = article_id
         self.volume = volume
         self.warehouse_id = None
-        self.aisle = None
-        self.article_id_mapping[self.article_id] = self
+        self.aisle_id = None
 
 
 class Order:
@@ -24,4 +21,4 @@ class Order:
                 self._weight_per_warehouse[article.warehouse_id] = article.volume
 
     def get_warehouse_weight(self, warehouse_id):
-        return self._weight_per_warehouse[warehouse_id]
+        return self._weight_per_warehouse.get(warehouse_id, 0)
