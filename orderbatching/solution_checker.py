@@ -1,7 +1,3 @@
-from typing import List
-
-from datastructures import Article
-
 WAVE_LIMIT = 250
 BATCH_WEIGHT_LIMIT = 10000
 
@@ -62,7 +58,7 @@ def calc_tour_cost(solution: dict, articles: dict) -> int:
     article_batches = [[articles[item["ArticleId"]] for item in batch["Items"]] for batch in solution["Batches"]]
     return sum(
         [len(set(article.warehouse_id for article in batch)) * 10 +
-         len(set(article.aisle_id for article in batch)) * 5
+         len(set((article.warehouse_id, article.aisle_id) for article in batch)) * 5
          for batch in article_batches]
                )
 
