@@ -35,7 +35,7 @@ def orders_to_waves(order_set: set) -> list:
         while True:
             try:
                 order_id = dist.popitem(False)[0]
-                wave.append(orders.pop(order_id))
+                wave.add(orders.pop(order_id))
                 order_ids.pop(order_id)
             except (WaveLimitExceeded, KeyError):
                 break
