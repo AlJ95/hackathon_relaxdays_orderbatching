@@ -39,7 +39,7 @@ def main(argv):
 
     import time
     start_time = time.time()
-    print(distribute_orders(orders, data['ArticleLocations']))
+    print(distribute_orders(orders, articles_id_mapping))
     print(time.time() - start_time)
 
 

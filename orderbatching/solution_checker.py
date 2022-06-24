@@ -1,3 +1,9 @@
+import json
+import os
+
+from orderbatching.datastructures import Article
+
+
 WAVE_LIMIT = 250
 BATCH_WEIGHT_LIMIT = 10000
 
@@ -29,7 +35,7 @@ def check_solution(solution: dict, articles: dict):
           f"Total Cost: {tour_cost + rest_cost}")
 
 
-def check_wave_size(batch_ids: list, wave_size: int, batches: dict) -> bool:
+def check_wave_size(batch_ids: list, wave_size: int, batches: list) -> bool:
     """
     Checks if wave size is calculated correctly
     :param wave_size:
@@ -37,11 +43,14 @@ def check_wave_size(batch_ids: list, wave_size: int, batches: dict) -> bool:
     :param batches: batch dict
     :return:
     """
-    return sum([len(batches[batch_id]["Items"]) for batch_id in batch_ids]) == wave_size
+    batches = [order for batch in batches for order in batch["Items"] if batch["BatchId"] in batch_ids]
+    return len(batches) == wave_size
 
 
 def check_batch_volume(batch: dict, articles: dict) -> bool:
-    return sum([articles[article["ArticleId"]]["Volume"] for article in batch["Items"]]) == batch["BatchVolume"]
+    article_ids = [item["ArticleId"] for item in batch["Items"]]
+    articles = [articles[article_id] for article_id in articles if articles[article_id].article_id in article_ids]
+    return sum([article.volume for article in articles]) == batch["BatchVolume"]
 
 
 def check_max_wave_items(waves: list) -> bool:
@@ -76,3 +85,23 @@ def calc_rest_cost(solution: dict) -> int:
 
 def calc_total_cost(solution: dict, articles: dict) -> int:
     return calc_tour_cost(solution, articles) + calc_rest_cost(solution)
+
+
+if __name__ == "__main__":
+    solution_path = f"{os.path.dirname(__file__)}/data/solution0.json"
+    instance_path = f"{os.path.dirname(__file__)}/data/instance0.json"
+
+    with open(solution_path) as file:
+        result = json.load(file)
+
+    with open(instance_path) as file:
+        data = json.load(file)
+
+    articles_id_mapping, orders = {}, set()
+
+    for art in data['Articles']:
+        articles_id_mapping[art['ArticleId']] = Article(
+            article_id=art['ArticleId'], volume=art['Volume']
+        )
+
+    check_solution(result, articles_id_mapping)
