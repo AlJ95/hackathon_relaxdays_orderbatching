@@ -61,6 +61,7 @@ class Wave:
         self.article_amount = 0
         self.wave_size = wave_size
         self.orders = set()
+        self.batch_ids = []
 
     def __repr__(self):
         return (
@@ -75,3 +76,11 @@ class Wave:
             self.orders.add(order)
         else:
             raise WaveLimitExceeded
+
+    def get_solution_dict(self):
+        return {
+            "WaveId": self.wave_id,
+            "BatchIds": self.batch_ids,
+            "OrderIds": sorted([self.orders.pop().order_id for _ in range(len(self.orders))]),
+            "WaveSize": self.wave_size
+        }
