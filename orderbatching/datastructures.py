@@ -1,5 +1,6 @@
 
 import numpy as np
+import gmpy2
 
 
 class WaveLimitExceeded(Exception):
@@ -30,7 +31,7 @@ class Order:
         self.articles = articles
         self.warehouse_ids = set([article.warehouse_id for article in self.articles])
         Order.all_warehouse_ids.update(self.warehouse_ids)
-        self.warehouse_bits = None
+        self.warehouse_bit_vector_repr = None
 
     def __repr__(self):
         return (
@@ -38,10 +39,11 @@ class Order:
             f'articles=[{", ".join([str(article) for article in self.articles])}]>'
         )
 
-    def get_warehouse_bits(self):
-        if self.warehouse_bits is None:
-            self.warehouse_bits = np.array([(1 if i in self.warehouse_ids else 0) for i in Order.all_warehouse_ids])
-        return self.warehouse_bits
+    def get_warehouse_bit_vector_repr(self):
+        if self.warehouse_bit_vector_repr is None:
+            bit_list = [(1 if i in self.warehouse_ids else 0) for i in Order.all_warehouse_ids]
+            self.warehouse_bit_vector_repr = gmpy2.mpz(int(''.join([i for i in bit_list]), 2))
+        return self.warehouse_bit_vector_repr
 
     @classmethod
     def cast_all_warehouse_ids_attr(cls):
