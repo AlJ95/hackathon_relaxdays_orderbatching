@@ -113,3 +113,12 @@ class Batch:
             self.items.add((article.article_id, order_id))
         else:
             raise BatchLimitExceeded
+
+    def get_solution_dict(self):
+        item_list = list(self.items)
+        item_list.sort(key=lambda item: (item[0], item[1]))
+        item_list = [{"OrderId": item[0], "ArticleId": item[1]} for item in item_list]
+        return {
+            "BatchId": self.batch_id,
+            "Items": item_list
+        }
