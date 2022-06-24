@@ -2,7 +2,7 @@ WAVE_LIMIT = 250
 BATCH_WEIGHT_LIMIT = 10000
 
 
-def check_solution(solution: dict, articles: dict) -> bool:
+def check_solution(solution: dict, articles: dict):
     """
     Checks if solution is correct:
 
@@ -11,7 +11,6 @@ def check_solution(solution: dict, articles: dict) -> bool:
 
     :param articles: Articles dict in data["Articles"]
     :param solution: a dict, containing a list of waves and a list of batches
-    :return: True if conditions are
     """
 
     waves = solution["Waves"]
@@ -23,7 +22,11 @@ def check_solution(solution: dict, articles: dict) -> bool:
     assert check_max_batch_weight(waves), "Batch limit is violated."
     assert check_unique_order_ids(waves), "OrderIds are in different waves."
 
-    return True
+    tour_cost = calc_tour_cost(solution=solution, articles=articles)
+    rest_cost = calc_rest_cost(solution=solution)
+    print(f"Tour Cost: {tour_cost}\n"
+          f"Rest Cost: {rest_cost}\n"
+          f"Total Cost: {tour_cost + rest_cost}")
 
 
 def check_wave_size(batch_ids: list, wave_size: int, batches: dict) -> bool:
