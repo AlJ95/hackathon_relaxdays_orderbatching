@@ -54,6 +54,10 @@ def check_unique_order_ids(waves: dict) -> bool:
     return len(order_ids) == len(set(order_ids))
 
 
+def check_all_orders_processed(waves: dict, orders: list) -> bool:
+    return len(set(orders)) == len(set([order_id for wave in waves for order_id in wave["OrderIds"]]))
+
+
 def calc_tour_cost(solution: dict, articles: dict) -> int:
     article_batches = [[articles[item["ArticleId"]] for item in batch["Items"]] for batch in solution["Batches"]]
     return sum(
