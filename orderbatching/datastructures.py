@@ -1,4 +1,6 @@
 
+import numpy as np
+
 
 class WaveLimitExceeded(Exception):
     pass
@@ -28,6 +30,7 @@ class Order:
         self.articles = articles
         self.warehouse_ids = set([article.warehouse_id for article in self.articles])
         Order.all_warehouse_ids.update(self.warehouse_ids)
+        self.warehouse_bits = None
 
     def __repr__(self):
         return (
@@ -36,7 +39,13 @@ class Order:
         )
 
     def get_warehouse_bits(self):
-        return [(1 if i in self.warehouse_ids else 0) for i in range(len(Order.all_warehouse_ids))]
+        if self.warehouse_bits is None:
+            self.warehouse_bits = np.array([(1 if i in self.warehouse_ids else 0) for i in Order.all_warehouse_ids])
+        return self.warehouse_bits
+
+    @classmethod
+    def cast_all_warehouse_ids_attr(cls):
+        cls.all_warehouse_ids = list(cls.all_warehouse_ids)
 
 
 class Wave:

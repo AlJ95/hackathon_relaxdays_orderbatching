@@ -35,6 +35,8 @@ def main(argv):
             order_id=order['OrderId'], articles=articles
         ))
 
+    Order.cast_all_warehouse_ids_attr()
+
     import time
     start_time = time.time()
     print(orders_to_waves(orders))
