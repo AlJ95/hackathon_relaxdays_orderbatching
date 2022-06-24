@@ -17,16 +17,12 @@ def orders_to_waves(order_set: set) -> list:
     for key in reversed(sorted(order_ids, key=order_ids.get)):
         order_ids.move_to_end(key)
 
-    fast = True
-
     while len(orders) > 0:
         dist = OrderedDict()
 
         start_order = orders.popitem(False)
 
         for order_id in orders:
-            if not all([wh_id in start_order[1].warehouse_ids for wh_id in orders[order_id].warehouse_ids]) and fast:
-                continue
             if order_id != start_order[1].order_id:
                 bit_vec1, bit_vec2 = orders[order_id].get_warehouse_bit_vector_repr(), \
                                      start_order[1].get_warehouse_bit_vector_repr()
@@ -41,12 +37,7 @@ def orders_to_waves(order_set: set) -> list:
                 order_id = dist.popitem(False)[0]
                 wave.append(orders.pop(order_id))
                 order_ids.pop(order_id)
-            except KeyError:
-                if fast:
-                    fast = False
-                else:
-                    break
-            except WaveLimitExceeded:
+            except (WaveLimitExceeded, KeyError):
                 break
 
         waves.append(wave)
