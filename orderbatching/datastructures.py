@@ -1,5 +1,5 @@
 
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 
 
 class WaveLimitExceeded(Exception):
@@ -23,13 +23,18 @@ class Article:
 
 class Order:
 
-    def __init__(self, order_id: int, articles: list):
+    orders = {}
+    dist = OrderedDict()
+
+    def __init__(self, order_id: int, articles: list, max_warehouses=16):
         self.order_id = order_id
         self.articles = articles
         self.volume_per_warehouse = defaultdict(lambda: 0)
         for article in self.articles:
             self.volume_per_warehouse[article.warehouse_id] += article.volume
         self.warehouse_ids = self.volume_per_warehouse.keys()
+        self.warehouse_bits = [(1 if i in self.warehouse_ids else 0) for i in range(max_warehouses)]
+        Order.orders[self.order_id] = self
 
     def __lt__(self, other):
         # self < other
@@ -49,6 +54,29 @@ class Order:
             f'<Order order_id={self.order_id} '
             f'articles=[{", ".join([str(article) for article in self.articles])}]>'
         )
+
+    @staticmethod
+    def get_first_order():
+        order = OrderedDict([(Order.orders[key].order_id, len(Order.orders[key].warehouse_ids))
+                             for key in Order.orders])
+
+        for key in sorted(order, key=order.get):
+            order.move_to_end(key)
+
+        return Order.orders.pop(next(iter(Order.orders)))
+
+    @staticmethod
+    def calc_distance(order):
+        for order_id in Order.orders:
+            if order_id != order.order_id:
+                Order.dist[order_id] = sum([
+                    (int(x) - y) % 11 for x, y in zip(Order.orders[order_id].warehouse_bits, order.warehouse_bits)
+                ])
+
+        for key in sorted(Order.dist, key=Order.dist.get):
+            Order.dist.move_to_end(key)
+
+
 
 
 class Wave:

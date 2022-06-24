@@ -25,3 +25,4 @@ def orders_to_waves(orders: list) -> list:
         waves.append(wave)
 
     return waves
+
