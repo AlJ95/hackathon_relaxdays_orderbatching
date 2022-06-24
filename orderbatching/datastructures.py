@@ -1,10 +1,10 @@
 
-import numpy as np
 import gmpy2
 
 
 class WaveLimitExceeded(Exception):
     pass
+
 
 class BatchLimitExceeded(Exception):
     pass
@@ -72,7 +72,7 @@ class Wave:
             f'order_ids=[{", ".join([str(order.order_id) for order in self.orders])}]>'
         )
 
-    def append(self, order: Order):
+    def add(self, order: Order):
         order_article_amount = len(order.articles)
         if self.article_amount + order_article_amount <= self.wave_size:
             self.article_amount += order_article_amount
@@ -106,7 +106,7 @@ class Batch:
             f'items=[{", ".join([str(i) for i in self.items])}]>'
         )
 
-    def append(self, article: Article, order_id: int):
+    def add(self, article: Article, order_id: int):
         article_volume = article.volume
         if self.volume + article_volume <= self.max_batch_volume:
             self.volume += article_volume
