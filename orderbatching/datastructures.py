@@ -1,10 +1,10 @@
 
-import numpy as np
 import gmpy2
 
 
 class WaveLimitExceeded(Exception):
     pass
+
 
 class BatchLimitExceeded(Exception):
     pass

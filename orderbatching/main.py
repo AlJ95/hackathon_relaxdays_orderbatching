@@ -1,8 +1,9 @@
 import json
+import os
 import sys
+
 from datastructures import Article, Order
 from algorithm import orders_to_waves
-import os
 
 
 def main(argv):

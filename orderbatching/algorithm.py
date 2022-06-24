@@ -1,6 +1,6 @@
-import gmpy2
 from collections import OrderedDict
 from datastructures import Wave, WaveLimitExceeded
+import gmpy2
 
 
 def orders_to_waves(order_set: set) -> list:
