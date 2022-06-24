@@ -31,10 +31,23 @@ class Order:
             self.volume_per_warehouse[article.warehouse_id] += article.volume
         self.warehouse_ids = self.volume_per_warehouse.keys()
 
+    def __lt__(self, other):
+        # self < other
+        # to determine which order is best to pick as a first item for a wave
+        if len(self.warehouse_ids) < len(other.warehouse_ids):
+            return True
+        elif len(self.warehouse_ids) == len(other.warehouse_ids):
+            if sum(self.volume_per_warehouse.values()) > sum(other.volume_per_warehouse.values()):
+                return True
+            else:
+                return False
+        else:
+            return False
+
     def __repr__(self):
         return (
             f'<Order order_id={self.order_id} '
-            f'articles=[{" ,".join([str(article) for article in self.articles])}]>'
+            f'articles=[{", ".join([str(article) for article in self.articles])}]>'
         )
 
 
@@ -50,6 +63,12 @@ class Wave:
         self.batch_volume = batch_volume
         self.orders = []
         self.volume_per_warehouse = defaultdict(lambda: 0)
+
+    def __repr__(self):
+        return (
+            f'<Wave wave_id={self.wave_id} article_amount={self.article_amount} '
+            f'order_ids=[{", ".join([str(order.order_id) for order in self.orders])}]>'
+        )
 
     def append(self, order: Order):
         if self.fits(order):
@@ -67,9 +86,12 @@ class Wave:
         else:
             return True
 
-    #def score(self, order: Order) -> int:
-    #    score = 0
-    #    for warehouse_id, volume in order.volume_per_warehouse.items():
-    #        difference = self.batch_volume - ((self.volume_per_warehouse[warehouse_id] + volume) % self.batch_volume)
-    #        score += difference
-    #    return score
+    def score(self, order: Order) -> float:
+        score = 0
+        for warehouse_id, volume in order.volume_per_warehouse.items():
+            difference = self.batch_volume - ((self.volume_per_warehouse[warehouse_id] + volume) % self.batch_volume)
+            difference = 0 if difference == self.batch_volume else difference
+            score += difference
+        score = score / (len(order.volume_per_warehouse) * self.batch_volume)
+        assert 0.0 <= score <= 1.0
+        return score
