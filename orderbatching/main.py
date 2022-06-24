@@ -2,19 +2,19 @@ import json
 import sys
 from datastructures import Article, Order
 from algorithm import orders_to_waves
+import os
 
 
 def main(argv):
-    """
-    instance_path = argv[1] if argv and argv[1] is not None else "data/instance.json"
-    solution_path = argv[2] if argv and argv[2] is not None else "data/solution0.json"
+
+    instance_path = argv[1] if len(argv) > 1 and argv[1] else "data/instance.json"
+    solution_path = argv[2] if len(argv) > 2 and argv[2] else "data/solution0.json"
 
     solution_dir, _ = os.path.split(solution_path)
     if not os.path.isdir(solution_dir):
         raise FileNotFoundError(f'Solution dir {solution_dir} does not exist.')
-    """
 
-    with open('data/instance.json') as file:
+    with open(instance_path) as file:
         data = json.load(file)
 
     articles_id_mapping, orders = {}, []
