@@ -36,19 +36,6 @@ class Order:
         self.warehouse_bits = [(1 if i in self.warehouse_ids else 0) for i in range(max_warehouses)]
         Order.orders[self.order_id] = self
 
-    def __lt__(self, other):
-        # self < other
-        # to determine which order is best to pick as a first item for a wave
-        if len(self.warehouse_ids) < len(other.warehouse_ids):
-            return True
-        elif len(self.warehouse_ids) == len(other.warehouse_ids):
-            if sum(self.volume_per_warehouse.values()) > sum(other.volume_per_warehouse.values()):
-                return True
-            else:
-                return False
-        else:
-            return False
-
     def __repr__(self):
         return (
             f'<Order order_id={self.order_id} '

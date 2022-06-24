@@ -2,14 +2,12 @@
 from datastructures import Wave
 
 
-def orders_to_waves(orders: list) -> list:
+def orders_to_waves(orders: set) -> list:
 
     waves = []
-    orders.sort()
 
     while orders:
         wave = Wave()
-        wave.append(orders.pop(0))
         while True:
             best_order, best_score = None, float('inf')
             for order in orders:
@@ -20,9 +18,11 @@ def orders_to_waves(orders: list) -> list:
             if best_order:
                 wave.append(best_order)
                 orders.remove(best_order)
+                print(f'wave_id {wave.wave_id}: new order {best_order.order_id}')
             else:
                 break
         waves.append(wave)
+        print()
 
     return waves
 
