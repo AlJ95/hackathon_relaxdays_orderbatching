@@ -1,6 +1,4 @@
 
-from collections import defaultdict
-
 
 class WaveLimitExceeded(Exception):
     pass
@@ -23,20 +21,22 @@ class Article:
 
 class Order:
 
-    def __init__(self, order_id: int, articles: list, max_warehouses=16):
+    all_warehouse_ids = set()
+
+    def __init__(self, order_id: int, articles: list):
         self.order_id = order_id
         self.articles = articles
-        self.volume_per_warehouse = defaultdict(lambda: 0)
-        for article in self.articles:
-            self.volume_per_warehouse[article.warehouse_id] += article.volume
-        self.warehouse_ids = self.volume_per_warehouse.keys()
-        self.warehouse_bits = [(1 if i in self.warehouse_ids else 0) for i in range(max_warehouses)]
+        self.warehouse_ids = set([article.warehouse_id for article in self.articles])
+        Order.all_warehouse_ids.update(self.warehouse_ids)
 
     def __repr__(self):
         return (
             f'<Order order_id={self.order_id} '
             f'articles=[{", ".join([str(article) for article in self.articles])}]>'
         )
+
+    def get_warehouse_bits(self):
+        return [(1 if i in self.warehouse_ids else 0) for i in range(len(Order.all_warehouse_ids))]
 
 
 class Wave:
@@ -50,7 +50,6 @@ class Wave:
         self.wave_size = wave_size
         self.batch_volume = batch_volume
         self.orders = []
-        self.volume_per_warehouse = defaultdict(lambda: 0)
 
     def __repr__(self):
         return (
@@ -61,8 +60,6 @@ class Wave:
     def append(self, order: Order):
         if self.fits(order):
             self.article_amount += len(order.articles)
-            for warehouse_id, volume in order.volume_per_warehouse.items():
-                self.volume_per_warehouse[warehouse_id] += volume
             self.orders.append(order)
         else:
             raise WaveLimitExceeded
@@ -73,13 +70,3 @@ class Wave:
             return False
         else:
             return True
-
-    def score(self, order: Order) -> float:
-        score = 0
-        for warehouse_id, volume in order.volume_per_warehouse.items():
-            difference = self.batch_volume - ((self.volume_per_warehouse[warehouse_id] + volume) % self.batch_volume)
-            difference = 0 if difference == self.batch_volume else difference
-            score += difference
-        score = score / (len(order.volume_per_warehouse) * self.batch_volume)
-        assert 0.0 <= score <= 1.0
-        return score
