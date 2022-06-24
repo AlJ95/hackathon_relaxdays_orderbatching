@@ -42,7 +42,7 @@ class Order:
     def get_warehouse_bit_vector_repr(self):
         if self.warehouse_bit_vector_repr is None:
             bit_list = [(1 if i in self.warehouse_ids else 0) for i in Order.all_warehouse_ids]
-            self.warehouse_bit_vector_repr = gmpy2.mpz(int(''.join([i for i in bit_list]), 2))
+            self.warehouse_bit_vector_repr = gmpy2.mpz(int(''.join([str(i) for i in bit_list]), 2))
         return self.warehouse_bit_vector_repr
 
     @classmethod
