@@ -7,8 +7,8 @@ import os
 
 def main(argv):
 
-    instance_path = argv[1] if len(argv) > 1 and argv[1] else "data/instance.json"
-    solution_path = argv[2] if len(argv) > 2 and argv[2] else "data/solution0.json"
+    instance_path = argv[1] if len(argv) > 1 else "data/instance0.json"
+    solution_path = argv[2] if len(argv) > 2 else "data/solution0.json"
 
     solution_dir, _ = os.path.split(solution_path)
     if not os.path.isdir(solution_dir):
