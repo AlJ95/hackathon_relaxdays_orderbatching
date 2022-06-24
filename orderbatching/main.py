@@ -1,7 +1,7 @@
 import json
 import sys
 from datastructures import Article, Order
-from algorithm import orders_to_waves
+from algorithm import orders_to_waves2
 import os
 
 
@@ -37,11 +37,7 @@ def main(argv):
 
     import time
     start_time = time.time()
-    print(Order.get_wave())
-    print(time.time() - start_time)
-
-    start_time = time.time()
-    print(orders_to_waves(orders))
+    print(orders_to_waves2(orders))
     print(time.time() - start_time)
 
 
