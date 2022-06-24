@@ -38,6 +38,7 @@ def orders_to_waves(order_set: set) -> list:
             dist.move_to_end(key)
 
         wave = Wave()
+        wave.add(start_order[1].order_id)
         while True:
             try:
                 order_id = dist.popitem(False)[0]
@@ -80,6 +81,7 @@ def orders_to_batch(wave: Wave) -> List[Batch]:
             dist.move_to_end(key)
 
         batch = Batch()
+        batch.add(start_order[1].order_id)
         while True:
             try:
                 order_id = dist.popitem(False)[0]
