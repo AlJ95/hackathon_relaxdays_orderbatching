@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 from datastructures import Article, Order
 
@@ -6,6 +7,10 @@ from datastructures import Article, Order
 def main(argv):
     instance_path = argv[1] if argv[1] is not None else "orderbatching/data/instance.json"
     solution_path = argv[2] if argv[2] is not None else "orderbatching/data/solution.json"
+
+    solution_dir, _ = os.path.split(solution_path)
+    if not os.path.isdir(solution_dir):
+        raise FileNotFoundError(f'Solution dir {solution_dir} does not exist.')
 
     with open(instance_path) as file:
         data = json.load(file)
