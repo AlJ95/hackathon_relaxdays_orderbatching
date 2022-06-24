@@ -60,10 +60,10 @@ class Order:
         order = OrderedDict([(Order.orders[key].order_id, len(Order.orders[key].warehouse_ids))
                              for key in Order.orders])
 
-        for key in sorted(order, key=order.get):
+        for key in reversed(sorted(order, key=order.get)):
             order.move_to_end(key)
 
-        return Order.orders.pop(next(iter(Order.orders)))
+        return Order.orders.pop(next(iter(order)))
 
     @staticmethod
     def calc_distance(order):
@@ -76,7 +76,11 @@ class Order:
         for key in sorted(Order.dist, key=Order.dist.get):
             Order.dist.move_to_end(key)
 
-
+    @staticmethod
+    def get_wave():
+        order = Order.get_first_order()
+        Order.calc_distance(order)
+        return [Order.orders[Order.dist.popitem(False)[0]] for _ in range(240)]
 
 
 class Wave:

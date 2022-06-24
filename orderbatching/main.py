@@ -7,8 +7,8 @@ import os
 
 def main(argv):
 
-    instance_path = argv[1] if len(argv) > 1 else "data/instance0.json"
-    solution_path = argv[2] if len(argv) > 2 else "data/solution0.json"
+    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance4.json"
+    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution4.json"
 
     solution_dir, _ = os.path.split(solution_path)
     if not os.path.isdir(solution_dir):
@@ -35,8 +35,15 @@ def main(argv):
             order_id=order['OrderId'], articles=articles
         ))
 
-    print(orders_to_waves(orders))
+    wave = Order.get_wave()
+
+    print(wave)
+
+    # print(orders_to_waves(orders))
 
 
 if __name__ == "__main__":
-    main(argv=sys.argv)
+    # main(argv=sys.argv)
+    # argv = ["main.py", "data/instance4.json", "data/test.json"]
+    argv = []
+    main(argv)
