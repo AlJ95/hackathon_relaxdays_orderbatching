@@ -1,5 +1,5 @@
 from collections import OrderedDict
-
+import numpy as np
 from datastructures import Wave, WaveLimitExceeded
 
 
@@ -24,8 +24,8 @@ def orders_to_waves(order_set: set) -> list:
 
         for order_id in orders:
             if order_id != start_order[1].order_id:
-                dist[order_id] = sum([
-                    (int(x) - y) % 11 for x, y in zip(orders[order_id].warehouse_bits, start_order[1].warehouse_bits)
+                dist[order_id] = np.sum([
+                    (orders[order_id].warehouse_bits - start_order[1].warehouse_bits) % 11
                 ])
 
         for key in sorted(dist, key=dist.get):
