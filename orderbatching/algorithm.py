@@ -38,13 +38,19 @@ def orders_to_waves(order_set: set) -> list:
             dist.move_to_end(key)
 
         wave = Wave()
-        wave.add(start_order[1].order_id)
+        wave.add(start_order[1])
         while True:
             try:
-                order_id = dist.popitem(False)[0]
-                wave.add(orders.pop(order_id))
+                order_id, order_dist = dist.popitem(False)
+                order = orders.pop(order_id)
+                wave.add(order)
                 order_ids.pop(order_id)
-            except (WaveLimitExceeded, KeyError):
+            except WaveLimitExceeded:
+                orders.update({order_id: order})
+                dist.update({order_id: order_dist})
+                dist.move_to_end(order_id, last=False)
+                break
+            except KeyError:
                 break
 
         waves.append(wave)
@@ -52,59 +58,67 @@ def orders_to_waves(order_set: set) -> list:
     return waves
 
 
-def orders_to_batch(wave: Wave) -> List[Batch]:
+def articles_to_batch(wave: Wave, articles_id_mapping: dict) -> List[Batch]:
     batches = []
 
-    orders = OrderedDict()
-    for _ in range(len(wave.orders)):
-        o = wave.orders.pop()
-        orders.update({o.order_id: o})
-
-    order_ids = OrderedDict([(orders[key].order_id, len(orders[key].warehouse_ids))
-                             for key in orders])
-
-    for key in reversed(sorted(order_ids, key=order_ids.get)):
-        order_ids.move_to_end(key)
-
-    while len(orders) > 0:
-        dist = OrderedDict()
-
-        start_order = orders.popitem(False)
-
-        for order_id in orders:
-            if order_id != start_order[1].order_id:
-                bit_vec1, bit_vec2 = orders[order_id].get_warehouse_bit_vector_repr(), \
-                                     start_order[1].get_warehouse_bit_vector_repr()
-                dist[order_id] = gmpy2.popcount(bit_vec1 & ~bit_vec2) + gmpy2.popcount(bit_vec1 & ~bit_vec2) * 5
-
-        for key in sorted(dist, key=dist.get):
-            dist.move_to_end(key)
-
-        batch = Batch()
-        batch.add(start_order[1].order_id)
-        while True:
+    articles_location_mapping = OrderedDict()
+    for order in wave.orders:
+        for article in order.articles:
             try:
-                order_id = dist.popitem(False)[0]
-                order = orders.pop(order_id)
-                for article in order.articles:
-                    batch.add(article, order.order_id)
-                order_ids.pop(order_id)
-            except (BatchLimitExceeded, KeyError):
-                break
+                articles_location_mapping[article.warehouse_id].append((article.article_id, order.order_id))
+            except KeyError:
+                articles_location_mapping[article.warehouse_id] = [(article.article_id, order.order_id)]
+    for key in sorted(articles_location_mapping, key=lambda x: len(articles_location_mapping.get(x)), reverse=True):
+        articles_location_mapping.move_to_end(key)
+    for warehouse_id, article_list in articles_location_mapping.items():
+        aisle_article = OrderedDict()
+        for article_id, order_id in article_list:
+            article = articles_id_mapping[article_id]
+            try:
+                aisle_article[article.aisle_id].append((article, order_id))
+            except KeyError:
+                aisle_article[article.aisle_id] = [(article, order_id)]
+        articles_location_mapping[warehouse_id] = aisle_article
+        for key in sorted(articles_location_mapping[warehouse_id], key=lambda x: len(articles_location_mapping[warehouse_id].get(x)), reverse=True):
+            articles_location_mapping[warehouse_id].move_to_end(key)
 
-        wave.batch_ids.append(batch.batch_id)
-        batches.append(batch)
+    while articles_location_mapping:
+        _, warehouse = articles_location_mapping.popitem(False)
+        while warehouse:
+            _, aisle = warehouse.popitem(False)
+            aisle.sort(key=lambda x: x[0].volume, reverse=True)
+            batch = Batch()
+            while True:
+                try:
+                    article, order_id = aisle.pop(0)
+                    batch.add(article, order_id)
+                except BatchLimitExceeded:
+                    batches.append(batch)
+                    batch = Batch()
+                    batch.add(article, order_id)
+                except IndexError:
+                    aisle_ids_to_pop = []
+                    for aisle_id, aisle in warehouse.items():
+                        aisle_volume = sum([article[0].volume for article in aisle])
+                        if batch.volume + aisle_volume <= batch.max_batch_volume:
+                            for article, order_id in aisle:
+                                batch.add(article, order_id)
+                            aisle_ids_to_pop.append(aisle_id)
+                    for aisle_id in aisle_ids_to_pop:
+                        warehouse.pop(aisle_id)
+                    batches.append(batch)
+                    break
 
     return batches
 
 
-def distribute_orders(order_set: set, articles: dict):
+def distribute_orders(order_set: set, articles_id_mapping: dict, articles: dict):
     t0 = time.time()
     waves = orders_to_waves(order_set=order_set)
 
     batches = []
     for wave in waves:
-        res = orders_to_batch(wave)
+        res = articles_to_batch(wave, articles_id_mapping)
         for batch in res:
             batches.append(batch)
 
@@ -115,11 +129,11 @@ def distribute_orders(order_set: set, articles: dict):
 
     print("####################################\n")
     print("Statistics:\n")
-    print(f"Average Number of Articles per Wave: {sum([wave.wave_size for wave in waves])/len(waves): 3.1f}")
-    print(f"Average Weight of per Batch: {sum([batch.volume for batch in batches]) / len(batches): 4.0f}")
+    #print(f"Average Number of Articles per Wave: {sum([wave.wave_size for wave in waves])/len(waves): 3.1f}")
+    #print(f"Average Weight of per Batch: {sum([batch.volume for batch in batches]) / len(batches): 4.0f}")
     print(f"{time.time() - t0: 3.0f} seconds needed for {len(order_set)} orders.\n")
 
-    check_solution(solution, articles)
+    #check_solution(solution, articles)
 
     print("\n####################################")
 
