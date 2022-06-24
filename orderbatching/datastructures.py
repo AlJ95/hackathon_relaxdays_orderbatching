@@ -45,6 +45,7 @@ class Order:
 
     @classmethod
     def cast_all_warehouse_ids_attr(cls):
+        # to preserve order when iterating over all_warehouse_ids
         cls.all_warehouse_ids = list(cls.all_warehouse_ids)
 
 
