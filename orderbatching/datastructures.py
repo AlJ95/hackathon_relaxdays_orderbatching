@@ -5,6 +5,9 @@ import gmpy2
 class WaveLimitExceeded(Exception):
     pass
 
+class BatchLimitExceeded(Exception):
+    pass
+
 
 class Article:
 
@@ -74,3 +77,29 @@ class Wave:
             self.orders.add(order)
         else:
             raise WaveLimitExceeded
+
+
+class Batch:
+
+    id_counter = 0
+
+    def __init__(self, max_batch_volume=10_000):
+        self.batch_id = Batch.id_counter
+        Batch.id_counter += 1
+        self.max_batch_volume = max_batch_volume
+        self.volume = 0
+        self.items = set()
+
+    def __repr__(self):
+        return (
+            f'<Batch batch_id={self.batch_id} volume={self.volume} '
+            f'items=[{", ".join([str(i) for i in self.items])}]>'
+        )
+
+    def append(self, article: Article, order_id: int):
+        article_volume = article.volume
+        if self.volume + article_volume <= self.max_batch_volume:
+            self.volume += article_volume
+            self.items.add((article.article_id, order_id))
+        else:
+            raise BatchLimitExceeded
