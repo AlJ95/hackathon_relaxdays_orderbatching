@@ -1,4 +1,4 @@
-from datastructures import Wave, Order
+from datastructures import Wave, Order, WaveLimitExceeded
 from collections import OrderedDict
 
 
@@ -55,9 +55,12 @@ def orders_to_waves2(order_set: set) -> list:
         for key in sorted(dist, key=dist.get):
             dist.move_to_end(key)
 
-        wave = []
-        for _ in range(min(240, len(orders))):
-            wave.append(orders.pop(dist.popitem(False)[0]))
+        wave = Wave()
+        while True:
+            try:
+                wave.append(orders.pop(dist.popitem(False)[0]))
+            except (WaveLimitExceeded, KeyError):
+                break
 
         waves.append(wave)
 
