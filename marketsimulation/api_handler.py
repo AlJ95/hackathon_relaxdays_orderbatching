@@ -2,7 +2,6 @@ import warnings
 import time
 import requests
 
-LAST_REQUEST = time.time()
 
 class API:
 
