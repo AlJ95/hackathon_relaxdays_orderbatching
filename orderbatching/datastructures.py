@@ -52,13 +52,12 @@ class Wave:
 
     id_counter = 0
 
-    def __init__(self, wave_size=250, batch_volume=10_000):
+    def __init__(self, wave_size=250):
         self.wave_id = Wave.id_counter
         Wave.id_counter += 1
         self.article_amount = 0
         self.wave_size = wave_size
-        self.batch_volume = batch_volume
-        self.orders = []
+        self.orders = set()
 
     def __repr__(self):
         return (
@@ -67,15 +66,9 @@ class Wave:
         )
 
     def append(self, order: Order):
-        if self.fits(order):
-            self.article_amount += len(order.articles)
-            self.orders.append(order)
+        order_article_amount = len(order.articles)
+        if self.article_amount + order_article_amount <= self.wave_size:
+            self.article_amount += order_article_amount
+            self.orders.add(order)
         else:
             raise WaveLimitExceeded
-
-    def fits(self, order: Order) -> bool:
-        order_article_amount = len(order.articles)
-        if self.article_amount + order_article_amount > self.wave_size:
-            return False
-        else:
-            return True
