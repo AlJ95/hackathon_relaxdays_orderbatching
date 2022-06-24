@@ -7,8 +7,8 @@ import os
 
 def main(argv):
 
-    instance_path = argv[1] if len(argv) > 1 else "data/instance0.json"
-    solution_path = argv[2] if len(argv) > 2 else "data/solution0.json"
+    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance4.json"
+    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution4.json"
 
     solution_dir, _ = os.path.split(solution_path)
     if solution_dir and not os.path.isdir(solution_dir):
@@ -36,6 +36,10 @@ def main(argv):
         ))
 
     import time
+    start_time = time.time()
+    print(Order.get_wave())
+    print(time.time() - start_time)
+
     start_time = time.time()
     print(orders_to_waves(orders))
     print(time.time() - start_time)
