@@ -61,6 +61,9 @@ def main(argv):
     check_solution(solution, articles_id_mapping, data["Orders"])
 
     # save solution dict to solution_path
+    if os.path.exists(solution_path):
+        os.remove(solution_path)
+
     with open(solution_path, 'x') as file:
         json.dump(solution, file)
 
