@@ -54,9 +54,9 @@ def orders_to_waves(order_set: set) -> list:
         for order_id in orders:
             if order_id != start_order[1].order_id:
                 # This is a logical bitwise operation which does the same as described in the __doc__ of this function
-                bit_vec1, bit_vec2 = orders[order_id].get_warehouse_bit_vector_repr(), \
-                                     start_order[1].get_warehouse_bit_vector_repr()
-                dist[order_id] = gmpy2.popcount(bit_vec1 & ~bit_vec2) + gmpy2.popcount(bit_vec1 & ~bit_vec2) * 10
+                bit_vec_start = start_order[1].get_warehouse_bit_vector_repr()
+                bit_vec_new = orders[order_id].get_warehouse_bit_vector_repr()
+                dist[order_id] = gmpy2.popcount(bit_vec_start & ~bit_vec_new) + gmpy2.popcount(bit_vec_new & ~bit_vec_start) * 10
 
         # Sort by distance
         for key in sorted(dist, key=dist.get):
