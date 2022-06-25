@@ -117,7 +117,7 @@ class Batch:
     def get_solution_dict(self):
         item_list = list(self.items)
         item_list.sort(key=lambda item: (item[0], item[1]))
-        item_list = [{"OrderId": item[0], "ArticleId": item[1]} for item in item_list]
+        item_list = [{"OrderId": item[1], "ArticleId": item[0]} for item in item_list]
         return {
             "BatchId": self.batch_id,
             "Items": item_list,
