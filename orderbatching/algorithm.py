@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 from typing import List
 
-from datastructures import Wave, WaveLimitExceeded, Batch, BatchLimitExceeded, Article
+from datastructures import Wave, WaveLimitExceeded, Batch, BatchLimitExceeded
 from solution_checker import check_solution
 
 

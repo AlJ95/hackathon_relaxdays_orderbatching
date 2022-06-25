@@ -4,11 +4,16 @@ from datastructures import Article, Order
 from algorithm import distribute_orders
 import os
 
+# TODO: Funktion zum Speichern von solution
+# TODO: Docker
+# TODO: Kommentare
+# TODO: order_to_batches cleanup
+
 
 def main(argv):
 
-    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance1.json"
-    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution1.json"
+    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance3.json"
+    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution3.json"
 
     solution_dir, _ = os.path.split(solution_path)
     if solution_dir and not os.path.isdir(solution_dir):
