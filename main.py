@@ -6,7 +6,6 @@ from test_solution import check_solution
 import os
 
 # TODO: Docker
-# TODO: Kommentare
 # TODO: order_to_batches cleanup
 # TODO: Readmes für Unterordner
 
@@ -15,8 +14,8 @@ def main(argv):
 
     # check if main.py is called with the required arguments
     try:
-        instance_path = argv[1]
-        solution_path = argv[2]
+        instance_path = os.path.join("instances", argv[1])
+        solution_path = os.path.join("solution", argv[2])
     except IndexError:
         raise ValueError('instance_path and/or solution_path is missing.')
 
