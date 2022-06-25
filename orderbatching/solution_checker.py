@@ -1,7 +1,7 @@
 import json
 import os
 
-from orderbatching.datastructures import Article
+from datastructures import Article
 
 
 WAVE_LIMIT = 250

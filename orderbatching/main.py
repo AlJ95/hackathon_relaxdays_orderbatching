@@ -4,16 +4,19 @@ from datastructures import Article, Order
 from algorithm import distribute_orders
 import os
 
-# TODO: Funktion zum Speichern von solution
 # TODO: Docker
 # TODO: Kommentare
 # TODO: order_to_batches cleanup
+# TODO: Readmes für Unterordner
 
 
 def main(argv):
 
-    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance3.json"
-    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution3.json"
+    try:
+        instance_path = argv[1]
+        solution_path = argv[2]
+    except IndexError:
+        raise ValueError('instance_path and/or solution_path is missing.')
 
     solution_dir, _ = os.path.split(solution_path)
     if solution_dir and not os.path.isdir(solution_dir):
@@ -42,7 +45,10 @@ def main(argv):
 
     Order.cast_all_warehouse_ids_attr()
 
-    distribute_orders(orders, articles_id_mapping)
+    solution = distribute_orders(orders, articles_id_mapping)
+
+    with open(solution_path, 'x') as file:
+        json.dump(solution, file)
 
 
 if __name__ == "__main__":
