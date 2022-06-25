@@ -6,7 +6,7 @@ from collections import OrderedDict
 from typing import List
 
 from datastructures import Wave, WaveLimitExceeded, Batch, BatchLimitExceeded
-from solution_checker import check_solution
+from test_solution import check_solution
 
 
 def orders_to_waves(order_set: set) -> list:
