@@ -58,7 +58,8 @@ def main(argv):
     # calculate the solution dict
     solution = distribute_orders(orders, articles_id_mapping)
 
-    check_solution(solution, articles_id_mapping, data["Orders"])
+    # Solution test function which checks logical correctness and calculates costs.
+    # check_solution(solution, articles_id_mapping, data["Orders"])
 
     # save solution dict to solution_path
     if os.path.exists(solution_path):
