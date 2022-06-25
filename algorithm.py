@@ -139,8 +139,6 @@ def distribute_orders(order_set: set, articles_id_mapping: dict):
     print(f"Number of Batches: {len(batches)}")
     print(f"{time.time() - t0: 3.0f} seconds needed for {order_count} orders.\n")
 
-    check_solution(solution, articles_id_mapping)
-
     print("\n####################################")
 
     return solution

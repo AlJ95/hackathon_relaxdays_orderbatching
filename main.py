@@ -2,6 +2,7 @@ import json
 import sys
 from datastructures import Article, Order
 from algorithm import distribute_orders
+from test_solution import check_solution
 import os
 
 # TODO: Docker
@@ -57,6 +58,8 @@ def main(argv):
 
     # calculate the solution dict
     solution = distribute_orders(orders, articles_id_mapping)
+
+    check_solution(solution, articles_id_mapping, data["Orders"])
 
     # save solution dict to solution_path
     with open(solution_path, 'x') as file:
