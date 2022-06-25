@@ -85,7 +85,7 @@ class Wave:
             "WaveId": self.wave_id,
             "BatchIds": self.batch_ids,
             "OrderIds": sorted([self.orders.pop().order_id for _ in range(len(self.orders))]),
-            "WaveSize": self.wave_size
+            "WaveSize": self.article_amount
         }
 
 
@@ -120,5 +120,6 @@ class Batch:
         item_list = [{"OrderId": item[0], "ArticleId": item[1]} for item in item_list]
         return {
             "BatchId": self.batch_id,
-            "Items": item_list
+            "Items": item_list,
+            "BatchVolume": self.volume
         }

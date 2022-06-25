@@ -7,8 +7,8 @@ import os
 
 def main(argv):
 
-    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance3.json"
-    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution3.json"
+    instance_path = argv[1] if len(argv) > 1 else f"{os.path.dirname(__file__)}/data/instance0.json"
+    solution_path = argv[2] if len(argv) > 2 else f"{os.path.dirname(__file__)}/data/solution0.json"
 
     solution_dir, _ = os.path.split(solution_path)
     if solution_dir and not os.path.isdir(solution_dir):
@@ -37,7 +37,7 @@ def main(argv):
 
     Order.cast_all_warehouse_ids_attr()
 
-    distribute_orders(orders, articles_id_mapping, data['ArticleLocations'])
+    distribute_orders(orders, articles_id_mapping)
 
 
 if __name__ == "__main__":
