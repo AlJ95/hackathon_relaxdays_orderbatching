@@ -49,7 +49,7 @@ def check_wave_size(batch_ids: list, wave_size: int, batches: list) -> bool:
 
 def check_batch_volume(batch: dict, articles: dict) -> bool:
     article_ids = [item["ArticleId"] for item in batch["Items"]]
-    articles = [articles[article_id] for article_id in articles if articles[article_id].article_id in article_ids]
+    articles = [articles[article_id] for article_id in article_ids]
     return sum([article.volume for article in articles]) == batch["BatchVolume"]
 
 

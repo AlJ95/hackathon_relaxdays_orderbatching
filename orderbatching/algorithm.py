@@ -112,15 +112,15 @@ def articles_to_batch(wave: Wave, articles_id_mapping: dict) -> List[Batch]:
     return batches
 
 
-def distribute_orders(order_set: set, articles_id_mapping: dict, articles: dict):
+def distribute_orders(order_set: set, articles_id_mapping: dict):
     t0 = time.time()
     waves = orders_to_waves(order_set=order_set)
 
     batches = []
     for wave in waves:
         res = articles_to_batch(wave, articles_id_mapping)
-        for batch in res:
-            batches.append(batch)
+        batches += res
+        wave.batch_ids = [batch.batch_id for batch in res]
 
     solution = {
         "Waves": [wave.get_solution_dict() for wave in waves],
@@ -133,7 +133,7 @@ def distribute_orders(order_set: set, articles_id_mapping: dict, articles: dict)
     #print(f"Average Weight of per Batch: {sum([batch.volume for batch in batches]) / len(batches): 4.0f}")
     print(f"{time.time() - t0: 3.0f} seconds needed for {len(order_set)} orders.\n")
 
-    #check_solution(solution, articles)
+    check_solution(solution, articles_id_mapping)
 
     print("\n####################################")
 
