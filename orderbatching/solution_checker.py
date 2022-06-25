@@ -49,7 +49,7 @@ def check_wave_size(batch_ids: list, wave_size: int, batches: list) -> bool:
 
 def check_batch_volume(batch: dict, articles: dict) -> bool:
     article_ids = [item["ArticleId"] for item in batch["Items"]]
-    articles = [articles[article_id] for article_id in articles if articles[article_id].article_id in article_ids]
+    articles = [articles[article_id] for article_id in article_ids]
     return sum([article.volume for article in articles]) == batch["BatchVolume"]
 
 
@@ -94,6 +94,7 @@ if __name__ == "__main__":
     with open(solution_path) as file:
         result = json.load(file)
 
+
     with open(instance_path) as file:
         data = json.load(file)
 
@@ -103,5 +104,12 @@ if __name__ == "__main__":
         articles_id_mapping[art['ArticleId']] = Article(
             article_id=art['ArticleId'], volume=art['Volume']
         )
+
+    for article_location in data['ArticleLocations']:
+        article = articles_id_mapping[article_location['ArticleId']]
+        article.warehouse_id = article_location['Warehouse']
+        article.aisle_id = article_location['Aisle']
+
+
 
     check_solution(result, articles_id_mapping)
