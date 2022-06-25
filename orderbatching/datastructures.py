@@ -98,7 +98,7 @@ class Batch:
         Batch.id_counter += 1
         self.max_batch_volume = max_batch_volume
         self.volume = 0
-        self.items = set()
+        self.items = []
 
     def __repr__(self):
         return (
@@ -110,7 +110,7 @@ class Batch:
         article_volume = article.volume
         if self.volume + article_volume <= self.max_batch_volume:
             self.volume += article_volume
-            self.items.add((article.article_id, order_id))
+            self.items.append((article.article_id, order_id))
         else:
             raise BatchLimitExceeded
 
