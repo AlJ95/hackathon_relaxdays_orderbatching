@@ -25,7 +25,7 @@ def check_solution(solution: dict, articles: dict):
     assert all([check_wave_size(wave["BatchIds"], wave["WaveSize"], batches) for wave in waves]), "WaveSize's incorrect"
     assert check_max_wave_items(waves), "Wave limit is violated."
     assert all([check_batch_volume(batch, articles) for batch in batches]), "Batch Volumes are incorrect"
-    assert check_max_batch_weight(waves), "Batch limit is violated."
+    assert check_max_batch_weight(batches), "Batch limit is violated."
     assert check_unique_order_ids(waves), "OrderIds are in different waves."
 
     tour_cost = calc_tour_cost(solution=solution, articles=articles)
@@ -54,11 +54,11 @@ def check_batch_volume(batch: dict, articles: dict) -> bool:
 
 
 def check_max_wave_items(waves: list) -> bool:
-    return all([wave["WaveSize"] < WAVE_LIMIT for wave in waves])
+    return all([wave["WaveSize"] <= WAVE_LIMIT for wave in waves])
 
 
-def check_max_batch_weight(waves: list) -> bool:
-    return all([wave["WaveSize"] < WAVE_LIMIT for wave in waves])
+def check_max_batch_weight(batches: list) -> bool:
+    return all([batch["BatchVolume"] <= BATCH_WEIGHT_LIMIT for batch in batches])
 
 
 def check_unique_order_ids(waves: dict) -> bool:
