@@ -5,10 +5,6 @@ from algorithm import distribute_orders
 from test_solution import check_solution
 import os
 
-# TODO: Docker
-# TODO: order_to_batches cleanup
-# TODO: Readmes für Unterordner
-
 
 def main(argv):
 
