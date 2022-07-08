@@ -1,6 +1,6 @@
 # Orderbatching
 
-This is our solution for the orderbatching problem from the third Relaxdays Hackathon.
+Winning solution for the orderbatching problem from the third Relaxdays Hackathon.
 
 Every problem instance consists articles and orders. Every article has a volume and is located 
 in a warehouses aisle. The goal is to distribute orders on waves and to separate the articles from
